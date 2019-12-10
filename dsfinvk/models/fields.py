@@ -1,3 +1,4 @@
+import re
 from datetime import date, datetime
 from decimal import Decimal, ROUND_HALF_UP
 
@@ -26,15 +27,23 @@ class Field:
 
 
 class StringField(Field):
+    def __init__(self, max_length=None, regex=None, *args, **kwargs):
+        self.max_length = max_length
+        self.regex = re.compile(regex) if regex else None
+        super().__init__(*args, **kwargs)
 
     def __set__(self, instance, value):
+        if self.max_length and len(value) > self.max_length:
+            raise ValueError("Value for {} is longer than {} characters.".format(value, self.max_length))
+        if self.regex and not self.regex.match(value):
+            raise ValueError("Value for {} does not have the valid format.".format(value))
         instance._data[self.name] = value
 
 
 class NumericField(Field):
-    def __init__(self, places=0, required=False, _d=None):
+    def __init__(self, places=0, *args, **kwargs):
         self.places = places
-        super().__init__(required=required, _d=_d)
+        super().__init__(*args, **kwargs)
 
     def __set__(self, instance, value):
         if not isinstance(value, (Decimal, int)):
@@ -44,6 +53,13 @@ class NumericField(Field):
         instance._data[self.name] = str(value.quantize(
             Decimal('1') / 10 ** self.places, ROUND_HALF_UP
         ))
+
+
+class BooleanField(Field):
+    def __set__(self, instance, value):
+        if not isinstance(value, bool):
+            raise TypeError("Value is not a boolean")
+        instance._data[self.name] = "1" if value else "0"
 
 
 class DateField(Field):
