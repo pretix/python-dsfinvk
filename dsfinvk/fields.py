@@ -1,19 +1,20 @@
 import re
 from datetime import date, datetime
-from decimal import Decimal, ROUND_HALF_UP
+from decimal import ROUND_HALF_UP, Decimal
 
 import pytz
 
 
 class Field:
-    def __init__(self, required=False, _d=None):
+    def __init__(self, required=False, default=None, _d=None):
         self.required = required
+        self.default = default
         self.__doc__ = _d
         super().__init__()
 
     def __get__(self, instance, objtype):
         if instance._data.get(self.name, None) is None:
-            instance._data[self.name] = self.initialize()
+            instance._data[self.name] = self.default
         return instance._data[self.name]
 
     def __set__(self, instance, value):
@@ -34,9 +35,9 @@ class StringField(Field):
 
     def __set__(self, instance, value):
         if self.max_length and len(value) > self.max_length:
-            raise ValueError("Value for {} is longer than {} characters.".format(value, self.max_length))
+            raise ValueError("Value for {} is longer than {} characters.".format(self.name, self.max_length))
         if self.regex and not self.regex.match(value):
-            raise ValueError("Value for {} does not have the valid format.".format(value))
+            raise ValueError("Value for {} does not have the valid format.".format(self.name))
         instance._data[self.name] = value
 
 
@@ -75,7 +76,7 @@ class LocalDateTimeField(Field):
             raise TypeError("Value is not a datetime")
         if value.utcoffset() is None:
             raise TypeError("Value is not timezone-aware")
-        instance._data[self.name] = value.isoformat().strftime('%Y-%m-%dT%H:%M:%S')
+        instance._data[self.name] = value.strftime('%Y-%m-%dT%H:%M:%S')
 
 
 class ISODateTimeField(Field):
@@ -84,4 +85,4 @@ class ISODateTimeField(Field):
             raise TypeError("Value is not a datetime")
         if value.utcoffset() is None:
             raise TypeError("Value is not timezone-aware")
-        instance._data[self.name] = value.astimezone(pytz.UTC).isoformat().strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'
+        instance._data[self.name] = value.astimezone(pytz.UTC).strftime('%Y-%m-%dT%H:%M:%S.%f')[:-3] + 'Z'

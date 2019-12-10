@@ -1,4 +1,4 @@
-from .fields import StringField, NumericField, LocalDateTimeField, BooleanField
+from .fields import BooleanField, LocalDateTimeField, NumericField, StringField
 from .table import Model
 
 TAXONOMY_VERSION = "2.0"
@@ -10,7 +10,7 @@ class Bonpos(Model):
     Die Datei Bonpos enthält die einzelnen Positionen eines Vorgangs mit der Zuordnung
     des korrekten USt-Satzes, der Menge und der Art der gelieferten Gegenstände (§ 14
     Abs. 4 UStG; § 22 Abs. 2 UStG i. V. m. § 63 Abs. 3 UStDV). Zusätzlich ist die Berech-
-    nungsmethode der ausweisbaren USt ersichtlich (Brutt ooder-                       Nettomethode). Bei der
+    nungsmethode der ausweisbaren USt ersichtlich (Brutto oder-Nettomethode). Bei der
     Bruttomethode wird nur der Bruttopreis aufgeführt, bei der Nettomethode der Nettopreis
     und die darauf entfallende Umsatzsteuer.
     """
@@ -287,9 +287,11 @@ class Stamm_Abschluss(Model):
     Z_ERSTELLUNG = LocalDateTimeField(_d="Zeitpunkt des Kassenabschlusses")
     Z_NR = NumericField(places=0, _d="Nr. des Kassenabschlusses")
     Z_BUCHUNGSTAG = StringField(_d="Vom Erstellungsdatum abweichender Verbuchungstag")
-    TAXONOMIE_VERSION = StringField(_d="Version der DFKA-Taxonomie-Kasse", max_length=5,
-                                    regex="^[0-9]+(\.[0-9]{1,2})?$",
-                                    default=TAXONOMY_VERSION)
+    TAXONOMIE_VERSION = StringField(
+        _d="Version der DFKA-Taxonomie-Kasse", max_length=5,
+        regex="^[0-9]+(\\.[0-9]{1,2})?$",
+        default=TAXONOMY_VERSION
+    )
     Z_START_ID = StringField(_d="Erste BON_ID im Abschluss", max_length=40)
     Z_ENDE_ID = StringField(_d="Letzte BON_ID im Abschluss", max_length=40)
     NAME = StringField(_d="Name des Unternehmens", max_length=60)
@@ -416,7 +418,8 @@ class Stamm_TSE(Model):
     TSE_ID = NumericField(places=0,
                           _d="ID der TSE - wird nur zur Referenzierung innerhalb eines Kassenabschlusses verwendet")
     TSE_SERIAL = StringField(
-        _d="Seriennummer der TSE (Entspricht laut TR-03153 Abschnitt 7.5. dem Hashwert des im Zertifikat enthaltenen Schlüssels in Octet-String-Darstellung)",
+        _d="Seriennummer der TSE (Entspricht laut TR-03153 Abschnitt 7.5. dem Hashwert des im Zertifikat enthaltenen "
+           "Schlüssels in Octet-String-Darstellung)",
         max_length=68
     )
     TSE_SIG_ALGO = StringField(
@@ -425,7 +428,8 @@ class Stamm_TSE(Model):
         regex="^ecdsa-plain-SHA(224|256|384|512|3-224|3-256|3-384|3-512)$"
     )
     TSE_ZEITFORMAT = StringField(
-        _d="Das von der TSE verwendete Format für die Log-Time - 'utcTime' = YYMMDDhhmmZ, 'utcTimeWithSeconds' = YYMMDDhhmmssZ, 'generalizedTime' = YYYYMMDDhhmmssZ, 'generalizedTimeWithMilliseconds' = YYYYMMDDhhmmss.fffZ"
+        _d="Das von der TSE verwendete Format für die Log-Time - 'utcTime' = YYMMDDhhmmZ, 'utcTimeWithSeconds' = YYMMDDhhmmssZ, "
+           "'generalizedTime' = YYYYMMDDhhmmssZ, 'generalizedTimeWithMilliseconds' = YYYYMMDDhhmmss.fffZ"
     )
     TSE_PD_ENCODING = StringField(
         _d="Text-Encoding der ProcessData (UTF-8 oder ASCII)",
@@ -436,7 +440,8 @@ class Stamm_TSE(Model):
         _d="Öffentlicher Schlüssel – ggf. extrahiert aus dem Zertifikat der TSE – in base64-Codierung",
         max_length=512
     )
-    TSE_ZERTIFIKAT_I = StringField(_d="Erste 1.000 Zeichen des Zertifikats der TSE (in base64-Codierung)", max_length=1000)
+    TSE_ZERTIFIKAT_I = StringField(_d="Erste 1.000 Zeichen des Zertifikats der TSE (in base64-Codierung)",
+                                   max_length=1000)
     TSE_ZERTIFIKAT_II = StringField(_d="Ggf. Rest des Zertifikats (in base64-Codierung)", max_length=1000)
 
 
@@ -485,10 +490,10 @@ class Z_Waehrungen(Model):
     Für jede Währung („ZAHLART_WAEH“) wird die Summe in dieser Datei dargestellt.
     Damit stellt diese Datei eine jederzeitige Kassensturz-Fähigkeit her.
     """
-    payment = "cash_per_currency.csv"
+    _filename = "cash_per_currency.csv"
 
     Z_KASSE_ID = StringField(_d="ID der (Abschluss-) Kasse", max_length=50)
     Z_ERSTELLUNG = LocalDateTimeField(_d="Zeitpunkt des Kassenabschlusses")
     Z_NR = NumericField(places=0, _d="Nr. des Kassenabschlusses")
-    ZAHLART_WAEH = StringField(_d="Währung", max_length=3, regex="^[A-Z]$")
+    ZAHLART_WAEH = StringField(_d="Währung", max_length=3, regex="^[A-Z]{3}$")
     ZAHLART_BETRAG_WAEH = NumericField(places=2, _d="Betrag")

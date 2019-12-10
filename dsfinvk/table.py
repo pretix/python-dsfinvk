@@ -1,14 +1,7 @@
 import collections
 import sys
-import xml.etree.cElementTree as ET
 from collections import OrderedDict
-from datetime import datetime
-from decimal import Decimal
 
-from dsfinvk.utils import validate_xml
-
-from . import NS_UDT
-from .container import Container
 from .fields import Field
 
 

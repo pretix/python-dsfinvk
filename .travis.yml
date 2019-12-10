@@ -10,7 +10,6 @@ install:
 script:
     - flake8 dsfinvk tests
     - isort -rc -c dsfinvk tests
-    - coverage run -m py.test -v tests/ && codecov
 cache:
     directories:
         - $HOME/.cache/pip
