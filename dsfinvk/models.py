@@ -1,4 +1,4 @@
-from .fields import BooleanField, LocalDateTimeField, NumericField, StringField
+from .fields import BooleanField, LocalDateTimeField, NumericField, StringField, ISODateTimeField
 from .table import Model
 
 TAXONOMY_VERSION = "2.0"
@@ -228,7 +228,7 @@ class Bonkopf_Zahlarten(Model):
 class Bon_Referenzen(Model):
     """
     3.1.2.4  Datei: Bon_Referenzen
-    In dieser Datei können Referenzen auf Vorgänge innerhalb derDSF  inV-K ebenso wie
+    In dieser Datei können Referenzen auf Vorgänge innerhalb der DSFinV-K ebenso wie
     Verweise auf externe Systeme vorgenommen werden. Welche Art der Referenzierung
     vorliegt, ergibt sich aus dem Typ der Referenzierung. Die einzelnen Felder sind imAn  -
     hang E in der Datei „Bon_Referenzen“ (references.csv) näher erläutert.
@@ -265,8 +265,8 @@ class TSE_Transaktionen(Model):
     BON_ID = StringField(_d="Vorgangs-ID", max_length=40)
     TSE_ID = NumericField(places=0, _d="ID der für die Transaktion verwendeten TSE")
     TSE_TANR = NumericField(places=0, _d="Transaktionsnummer der Transaktion")
-    TSE_TA_START = StringField(_d="Log-Time der StartTransaction-Operation", max_length=25)
-    TSE_TA_ENDE = StringField(_d="Log-Time der FinishTransaction-Operation", max_length=25)
+    TSE_TA_START = ISODateTimeField(_d="Log-Time der StartTransaction-Operation", max_length=25)
+    TSE_TA_ENDE = ISODateTimeField(_d="Log-Time der FinishTransaction-Operation", max_length=25)
     TSE_TA_VORGANGSART = StringField(_d="processType der FinishTransaction-Operation", max_length=30)
     TSE_TA_SIGZ = NumericField(places=0, _d="Signaturzähler der FinishTransaction-Operation")
     TSE_TA_SIG = StringField(_d="Signatur der FinishTransaction-Operation", max_length=512)
