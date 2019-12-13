@@ -220,7 +220,7 @@ class Bonkopf_Zahlarten(Model):
     BON_ID = StringField(_d="Vorgangs-ID", max_length=40)
     ZAHLART_TYP = StringField(_d="Typ der Zahlart", max_length=25)
     ZAHLART_NAME = StringField(_d="Name der Zahlart", max_length=60)
-    ZAHLWAEH_CODE = StringField(_d="Währungscode", max_length=3, regex="^[0-9]{3}$")
+    ZAHLWAEH_CODE = StringField(_d="Währungscode", max_length=3, regex="^[A-Z]{3}$")
     ZAHLWAEH_BETRAG = NumericField(places=2, _d="Betrag in Fremdwährung")
     BASISWAEH_BETRAG = NumericField(places=2, _d="Betrag in Basiswährung (i.d.R. EUR)")
 
