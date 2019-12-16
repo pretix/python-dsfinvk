@@ -47,7 +47,7 @@ class Bonpos_USt(Model):
     Position oder bei Rabattierungen mehrere Zeilen mit Preisangaben vorkommen können,
     ist diese Detailtabelle notwendig.
     """
-    _filename = "transactions_vat.csv"
+    _filename = "lines_vat.csv"
 
     Z_KASSE_ID = StringField(_d="ID der (Abschluss-) Kasse", max_length=50)
     Z_ERSTELLUNG = LocalDateTimeField(_d="Zeitpunkt des Kassenabschlusses")
