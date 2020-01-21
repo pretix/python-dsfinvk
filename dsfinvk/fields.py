@@ -37,7 +37,7 @@ class StringField(Field):
         if self.max_length and len(value) > self.max_length:
             raise ValueError("Value for {} is longer than {} characters.".format(self.name, self.max_length))
         if self.regex and not self.regex.match(value):
-            raise ValueError("Value for {} does not have the valid format.".format(self.name))
+            raise ValueError("Value {} for {} does not have the valid format.".format(value, self.name))
         instance._data[self.name] = value
 
 
@@ -51,9 +51,12 @@ class NumericField(Field):
             raise TypeError("Value is not a decimal or int")
         if isinstance(value, int):
             value = Decimal(value)
-        instance._data[self.name] = str(value.quantize(
-            Decimal('1') / 10 ** self.places, ROUND_HALF_UP
-        ))
+        if self.places > 0:
+            instance._data[self.name] = ('{:,.%df}' % self.places).format(value.quantize(
+                Decimal('1') / 10 ** self.places, ROUND_HALF_UP
+            )).translate({ord(','): '.', ord('.'): ','})
+        else:
+            instance._data[self.name] = '{:,d}'.format(int(value)).replace(',', '.')
 
 
 class BooleanField(Field):
