@@ -34,8 +34,9 @@ class StringField(Field):
         super().__init__(*args, **kwargs)
 
     def __set__(self, instance, value):
-        if self.max_length and len(value) > self.max_length:
-            raise ValueError("Value for {} is longer than {} characters.".format(self.name, self.max_length))
+        # TODO: Make it configurable if this should raise an error
+        #if self.max_length and len(value) > self.max_length:
+        #    raise ValueError("Value for {} is longer than {} characters.".format(self.name, self.max_length))
         if self.regex and not self.regex.match(value):
             raise ValueError("Value {} for {} does not have the valid format.".format(value, self.name))
         instance._data[self.name] = value
