@@ -1,7 +1,7 @@
 from .fields import BooleanField, LocalDateTimeField, NumericField, StringField, ISODateTimeField
 from .table import Model
 
-TAXONOMY_VERSION = "2.0"
+TAXONOMY_VERSION = "2.1"
 
 
 class Bonpos(Model):
@@ -36,7 +36,7 @@ class Bonpos(Model):
     MENGE = NumericField(places=3, _d="Menge")
     FAKTOR = NumericField(places=3, _d="Faktor, z. B. Gebindegrößen")
     EINHEIT = StringField(_d="Maßeinheit, z. B. kg, Liter oder Stück", max_length=50)
-    STK_BR = NumericField(places=2, _d="Preis pro Einheit inkl. USt")
+    STK_BR = NumericField(places=5, _d="Preis pro Einheit inkl. USt")
 
 
 class Bonpos_USt(Model):
@@ -288,7 +288,7 @@ class Stamm_Abschluss(Model):
     Z_NR = NumericField(places=0, _d="Nr. des Kassenabschlusses")
     Z_BUCHUNGSTAG = StringField(_d="Vom Erstellungsdatum abweichender Verbuchungstag")
     TAXONOMIE_VERSION = StringField(
-        _d="Version der DFKA-Taxonomie-Kasse", max_length=5,
+        _d="Version der DFKA-Taxonomie-Kasse", max_length=10,
         regex="^[0-9]+(\\.[0-9]{1,2})?$",
         default=TAXONOMY_VERSION
     )
@@ -335,7 +335,7 @@ class Stamm_Kassen(Model):
     Z_NR = NumericField(places=0, _d="Nr. des Kassenabschlusses")
     KASSE_BRAND = StringField(_d="Marke der Kasse", max_length=50)
     KASSE_MODELL = StringField(_d="Modellbezeichnung", max_length=50)
-    KASSE_SERIENNR = StringField(_d="Seriennummer der Kasse", max_length=50)
+    KASSE_SERIENNR = StringField(_d="Seriennummer der Kasse", max_length=70)
     KASSE_SW_BRAND = StringField(_d="Markenbezeichnung der Software", max_length=50)
     KASSE_SW_VERSION = StringField(_d="Version der Software", max_length=50)
     KASSE_BASISWAEH_CODE = StringField(_d="Basiswährung der Kasse", max_length=3, regex="[A-Z]{3}")
@@ -356,7 +356,7 @@ class Stamm_Terminals(Model):
     TERMINAL_ID = StringField(_d="ID des Terminals", max_length=50)
     TERMINAL_BRAND = StringField(_d="Marke der Terminals", max_length=50)
     TERMINAL_MODELL = StringField(_d="Modellbezeichnung des Terminals", max_length=50)
-    TERMINAL_SERIENNR = StringField(_d="Seriennummer des Terminals", max_length=50)
+    TERMINAL_SERIENNR = StringField(_d="Seriennummer des Terminals", max_length=70)
     TERMINAL_SW_BRAND = StringField(_d="Markenbezeichnung der Software", max_length=50)
     TERMINAL_SW_VERSION = StringField(_d="Version der Software", max_length=50)
 
@@ -402,7 +402,7 @@ class Stamm_USt(Model):
     Z_NR = NumericField(places=0, _d="Nr. des Kassenabschlusses")
     UST_SCHLUESSEL = NumericField(places=0, _d="ID des Umsatzsteuersatzes")
     UST_SATZ = NumericField(places=2, _d="Prozentsatz")
-    UST_BESCHR = StringField(_d="Beschreibung", max_length=255)
+    UST_BESCHR = StringField(_d="Beschreibung", max_length=55)
 
 
 class Stamm_TSE(Model):
@@ -429,7 +429,7 @@ class Stamm_TSE(Model):
     )
     TSE_ZEITFORMAT = StringField(
         _d="Das von der TSE verwendete Format für die Log-Time - 'utcTime' = YYMMDDhhmmZ, 'utcTimeWithSeconds' = YYMMDDhhmmssZ, "
-           "'generalizedTime' = YYYYMMDDhhmmssZ, 'generalizedTimeWithMilliseconds' = YYYYMMDDhhmmss.fffZ"
+           "'generalizedTime' = YYYYMMDDhhmmssZ, 'generalizedTimeWithMilliseconds' = YYYYMMDDhhmmss.fffZ, 'unixTime'"
     )
     TSE_PD_ENCODING = StringField(
         _d="Text-Encoding der ProcessData (UTF-8 oder ASCII)",
@@ -443,6 +443,11 @@ class Stamm_TSE(Model):
     TSE_ZERTIFIKAT_I = StringField(_d="Erste 1.000 Zeichen des Zertifikats der TSE (in base64-Codierung)",
                                    max_length=1000)
     TSE_ZERTIFIKAT_II = StringField(_d="Ggf. Rest des Zertifikats (in base64-Codierung)", max_length=1000)
+    TSE_ZERTIFIKAT_III = StringField(_d="Ggf. Rest des Zertifikats (in base64-Codierung)", max_length=1000)
+    TSE_ZERTIFIKAT_IV = StringField(_d="Ggf. Rest des Zertifikats (in base64-Codierung)", max_length=1000)
+    TSE_ZERTIFIKAT_V = StringField(_d="Ggf. Rest des Zertifikats (in base64-Codierung)", max_length=1000)
+    TSE_ZERTIFIKAT_VI = StringField(_d="Ggf. Rest des Zertifikats (in base64-Codierung)", max_length=1000)
+    TSE_ZERTIFIKAT_VII = StringField(_d="Ggf. Rest des Zertifikats (in base64-Codierung)", max_length=1000)
 
 
 class Z_GV_Typ(Model):
