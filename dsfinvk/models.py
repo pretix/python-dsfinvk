@@ -424,8 +424,7 @@ class Stamm_TSE(Model):
     )
     TSE_SIG_ALGO = StringField(
         _d="Der von der TSE verwendete Signaturalgorithmus",
-        max_length=21,
-        regex="^ecdsa-plain-SHA(224|256|384|512|3-224|3-256|3-384|3-512)$"
+        max_length=30,
     )
     TSE_ZEITFORMAT = StringField(
         _d="Das von der TSE verwendete Format für die Log-Time - 'utcTime' = YYMMDDhhmmZ, 'utcTimeWithSeconds' = YYMMDDhhmmssZ, "
