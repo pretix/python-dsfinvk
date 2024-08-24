@@ -243,7 +243,7 @@ class Bon_Referenzen(Model):
         _d="Zeilennummer des referenzierenden Vorgangs (nicht bei Verweis aus einem Bonkopf heraus)")
     REF_TYP = StringField(_d="Art der Referenz", max_length=20)
     REF_NAME = StringField(_d="Beschreibung bei Art “ExterneSonstige”", max_length=40)
-    REF_DATUM = LocalDateTimeField(_d="Datum des Kassenabschlusses")
+    REF_DATUM = LocalDateTimeField(_d="Zeitstempel des Kassenabschlusses, auf den referenziert wird")
     REF_Z_KASSE_ID = StringField(_d="ID der (Abschluss-) Kasse", max_length=50)
     REF_Z_NR = NumericField(places=0, _d="Nr. des Kassenabschlusses")
     REF_BON_ID = StringField(_d="Vorgangs-ID", max_length=40)
@@ -485,7 +485,7 @@ class Z_Zahlart(Model):
     Z_NR = NumericField(places=0, _d="Nr. des Kassenabschlusses")
     ZAHLART_TYP = StringField(_d="Typ der Zahlart", max_length=25)
     ZAHLART_NAME = StringField(_d="Name der Zahlart", max_length=60)
-    Z_ZAHLART_BETRAG = NumericField(places=2, _d="Betrag")
+    Z_ZAHLART_BETRAG = NumericField(places=2, _d="Betrag in der Basiswährung")
 
 
 class Z_Waehrungen(Model):
