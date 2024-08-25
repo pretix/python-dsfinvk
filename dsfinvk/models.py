@@ -271,7 +271,7 @@ class TSE_Transaktionen(Model):
     TSE_TA_SIGZ = NumericField(places=0, _d="Signaturzähler der FinishTransaction-Operation")
     TSE_TA_SIG = StringField(_d="Signatur der FinishTransaction-Operation", max_length=512)
     TSE_TA_FEHLER = StringField(_d="Ggf. Hinweise auf Fehler der TSE", max_length=200)
-    TSE_TA_VORGANGSDATEN = StringField(_d="Daten des Vorgangs (optional)")
+    TSE_VORGANGSDATEN = StringField(_d="Daten des Vorgangs (optional)")
 
 
 class Stamm_Abschluss(Model):
